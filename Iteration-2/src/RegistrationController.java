@@ -68,7 +68,7 @@ public class RegistrationController {
 
     }
 
-    public static ArrayList<String> getNamesList() {
+    private ArrayList<String> getNamesList() {
         ArrayList<String> names = new ArrayList<>();
         try {
             JSONParser parser = new JSONParser();
