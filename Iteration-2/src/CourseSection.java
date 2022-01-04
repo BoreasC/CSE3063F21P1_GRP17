@@ -137,5 +137,13 @@ public class CourseSection {
         this.failedCredit = failedCredit;
     }
 
+    public void setNumberOfQuotaFail(int numberOfQuotaFail) {
+        this.numberOfQuotaFail = numberOfQuotaFail;
+    }
+
+    public void setFailedQuota(String failedQuota) {
+        this.failedQuota = failedQuota;
+    }
+
 
 }

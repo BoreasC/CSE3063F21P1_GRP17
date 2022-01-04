@@ -14,23 +14,28 @@ public class RegistrationController {
 
     private String semester;
     private int year;
+    private int currentYear;
     private ArrayList<Course> courses = new ArrayList<>(); //List to hold courses objects
     private ArrayList<CourseSection> courseSections = new ArrayList<>();
     private int numberOfStudents;
     private int numberOfAdvisors;
+    private ArrayList<Advisor> advisors = new ArrayList<>(); // List to holds advisor objects
+    private ArrayList<Student> students = new ArrayList<>(); // List to holds student objects
 
     public  RegistrationController( ) throws IOException, ParseException {
         startRegistration();
     }
 
     private void startRegistration() {
+
         try {
             JSONParser parser = new JSONParser(); //Creates json parser object to parse input.json file
-            JSONObject input = (JSONObject) parser.parse(new FileReader("src//input.json"));
+            JSONObject input = (JSONObject) parser.parse(new FileReader("Iteration-2//src//input.json"));
             int numberOfAdvisors = Integer.parseInt((String)input.get("Advisors")); // Reads total number of advisor from input file
             setNumberOfAdvisors(numberOfAdvisors); // Pass advisor number to its setter method
             int numberOfStudents = Integer.parseInt((String)input.get("Students")); // Reads total number of students from input file
             setNumberOfStudents(numberOfStudents); // Pass student number to its setter method
+            currentYear = Integer.parseInt((String)input.get("CurrentYear"));
             semester = (String)input.get("CurrentSemester"); // Reads current semester value from input
             JSONArray inputCourses = (JSONArray) input.get("Courses");  // Reads courses from json file to json array object
 
@@ -49,7 +54,7 @@ public class RegistrationController {
                 String preRequisite = (String) course.get("preRequisites");
                 Course newCourse = new Course(courseCode, courseName, courseSemester, quota, credits, theoretical,
                         lab, year, requiredCredits, findCourse(preRequisite), passingCourseProb); // Creates courses objects with the data from input.json file
-                courses.add(newCourse); // Add every new course object to courses list 
+                courses.add(newCourse); // Add every new course object to courses list
                 courseSections.add(new CourseSection(newCourse)); // Creates coursection objects within the coursesections list
             }
             createAdvisors(); // After we finished with reading course section then we call the advisor initilazior
@@ -67,7 +72,7 @@ public class RegistrationController {
         ArrayList<String> names = new ArrayList<>();
         try {
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader("src//names.json"));
+            Object obj = parser.parse(new FileReader("Iteration-2//src//names.json"));
             JSONObject nameJson =  (JSONObject) obj;
             var name = (JSONArray) nameJson.get("names");
             Iterator<?> i = name.iterator();
@@ -82,7 +87,7 @@ public class RegistrationController {
         return names;
     }
 
-    private ArrayList<Advisor> advisors = new ArrayList<>(); // List to holds advisor objects
+
     private void createAdvisors()  {
         for (int i = 0; i < numberOfAdvisors; i++) {
             String advisorName =getNamesList().get((int) (Math.random() * getNamesList().size() - 1)); // Randomly assign a name to advisor  
@@ -91,7 +96,7 @@ public class RegistrationController {
         createStudents(); // Calls students initilazior
     }
 
-    private ArrayList<Student> students = new ArrayList<>(); // List to holds student objects
+
     private void createStudents()  {
         for(int year = 1; year <= 4; year++){
             for(int rank = 1; rank <= numberOfStudents / 4; rank++){
@@ -114,11 +119,12 @@ public class RegistrationController {
     private void addPreviousCourses() { // This methods adds previous courses of students who failed or passed to the previo
         ArrayList<Course> previousCourses = new ArrayList<>();
 
-        for (Course c : courses) {
-            if (c.getSemester().equals("fall")) { // We currently runs program for spring semester of first year, therefore fall semester's courses are previous courses to students
+        for(Course c : courses){
+            if ((c.getYear() <= currentYear && c.getSemester().equals("fall")) || (c.getYear() < currentYear && c.getSemester().equals("spring"))) { // We currently runs program for spring semester of first year, therefore fall semester's courses are previous courses to students
                 previousCourses.add(c); // Adds all previous courses to the list
             }
         }
+
         for (Student s : students) {                // In this section, for every previous course, we check whether students passed to course or not
             s.setLogString("Passed Courses: ");
             for (Course c: previousCourses) {
@@ -140,13 +146,14 @@ public class RegistrationController {
     private void showOutput() {
         // Prints students informations to the console
         for (Student std : students) {
-            System.out.println("" + std.getName());
-            System.out.println("\nStudent ID: " + std.getStudentID().getStudentID());
-            System.out.println("Student's year: " + std.getYear());
-            System.out.println("Student's GPA: " + std.getTranscript().calculateGPA());
-            System.out.println(std.getLogString()); // Prints buffer from student class
-            System.out.println("\n\n\n\n\n");
-
+            if(std.getYear()==currentYear){
+                System.out.println("" + std.getName());
+                System.out.println("\nStudent ID: " + std.getStudentID().getStudentID());
+                System.out.println("Student's year: " + std.getYear());
+                System.out.println("Student's GPA: " + std.getTranscript().calculateGPA());
+                System.out.println(std.getLogString()); // Prints buffer from student class
+                System.out.println("\n\n\n\n\n");
+            }
         }
         // After that, creates a json file for each students and prints student's logStrings into this files
         for (Student std: students) {
@@ -155,7 +162,7 @@ public class RegistrationController {
             JSONArray jsonList = new JSONArray();
             jsonList.add(studentJson);
 
-            try (FileWriter file = new FileWriter(new File( "Outputs//" + std.getStudentID().getStudentID() +  ".json"))) {
+            try (FileWriter file = new FileWriter(new File( "Iteration-2//Outputs//" + std.getStudentID().getStudentID() +  ".json"))) {
                 file.write(jsonList.toJSONString());
                 file.flush();
 
@@ -169,7 +176,7 @@ public class RegistrationController {
     private void showStatistics(){
         String buffer="";
         for(CourseSection cs: courseSections){
-            if(cs.getCourse().getSemester().equals(semester)){
+            if(cs.getCourse().getSemester().equals(semester) && cs.getCourse().getYear()==currentYear){
                 buffer += "\n" + cs.getCourseSectionCode() + " Statistics: " + "\n";;
                 buffer += cs.getNumberOfCollisionFail() + " students couldn't register due to collision problem." + cs.getFailedCollision() + " \n";
                 buffer += cs.getNumberOfQuotaFail() + " students couldn't register due to quota problem." + cs.getFailedQuota() + " \n";
@@ -184,7 +191,7 @@ public class RegistrationController {
         JSONArray statList = new JSONArray();
         statList.add(statJson);
 
-        try (FileWriter file = new FileWriter(new File("Outputs//Statistics.json"))) {
+        try (FileWriter file = new FileWriter(new File("Iteration-2//Outputs//Statistics.json"))) {
             file.write(statList.toJSONString());
             file.flush();
 
@@ -196,7 +203,7 @@ public class RegistrationController {
     public ArrayList<CourseSection> createNewCourseList(Student student) { // This method returns offered course lists if the course is passed by the student and course's semester is current semester
         ArrayList<CourseSection> newCourseList = new ArrayList<>();
         for (CourseSection c: courseSections) {
-            if (!student.isPassed(c.getCourse()) && (c.getCourse().getSemester().equals(semester)) && c.getCourse().getYear() == student.getYear()) {
+            if (!student.isPassed(c.getCourse()) && c.getCourse().getYear() <= student.getYear()) {
                 newCourseList.add(c);
             }
         }

@@ -2,12 +2,11 @@ import java.util.ArrayList;
 
 public class WeeklySchedule {
 
-    private CourseSection[][] stuSchedule;
+    private CourseSection[][] stuSchedule = new CourseSection[5][8];
     private Student student;
 
     public WeeklySchedule(Student student) {
         this.student = student;
-        stuSchedule = new CourseSection[5][8]; //
     }
 
     /**Takes a courseSection as argument and adds it to

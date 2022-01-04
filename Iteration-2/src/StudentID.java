@@ -1,20 +1,18 @@
 public class StudentID {
 
-    private int rank;
-    private int year;
+    private Student student;
     private final String department = "1501"; // Only for computer engineering
 
-    public StudentID(int year, int rank) {
-        this.year = year;
-        this.rank = rank;
+    public StudentID(Student stu) {
+        this.student = stu;
     }
 
     private String registrationYear() { // Finds reg year of students
-        return String.valueOf((2021 - year) % 100);
+        return String.valueOf((2021 - student.getYear()) % 100);
     }
 
     public String getStudentID() {
-        return department + registrationYear() + String.format("%03d", rank);
+        return department + registrationYear() + String.format("%03d", student.getRegistrationOrder());
     }
 
     public String toString() {
