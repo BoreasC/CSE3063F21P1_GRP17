@@ -6,9 +6,14 @@ public class Advisor {
         this.name = name;
 
     }
-    /** This method checks student's credit sufficiency, prerequisite of the course that the students wants to
+    /**
+     * This method checks student's credit sufficiency, prerequisite of the course that the students wants to
      * take and the collision status. It calls the methods defined below to
-     * perform the checks. */
+     * perform the checks
+     * @param  student  The student who completed the course selection and sent it to the advisor for approval
+     * @param  courseSection The course section which the student applies for registration
+     *
+     */
     public void approveCourse(Student student, CourseSection courseSection) {
         if (student.getTranscript().calculateCredits() < courseSection.getCourse().getRequiredCredits()) { // Checks credits for only engineering projects
             student.setLogString("\nInsufficient credit");

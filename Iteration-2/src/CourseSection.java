@@ -23,7 +23,13 @@ public class CourseSection {
         setSectionHour();
         setCourseSchedule();
     }
-
+    /**
+     * <p> This method sets course's days and hours randomly with order of execution:
+     * 1-Generates random day from 5 working days
+     * 2-Generates random hours from 8 working hours
+     * 3-Generated values assigns to the course program array only if particular schedule is available
+     * <p>
+     */
     private void setCourseSchedule() { // This method sets course's days and hours randomly
         for (int i = 0; i < sectionHour; i++) {
             int day = (int)(Math.random() * 5); // Generates random day from 5 working days
@@ -36,7 +42,10 @@ public class CourseSection {
             }
         }
     }
-
+    /**
+     * <p> This methods registers students to the courses if courses quotas are not full <p>
+     * @param student enrolling in the course
+     */
     public void addStudent(Student student) { // This methods registers students to the courses if courses quotas are not full
         if (!isFull()) {
             students.add(student);
@@ -46,9 +55,9 @@ public class CourseSection {
             }
         }else {
             student.setLogString("\nThe student couldn't register for " + getCourseSectionCode() + " because " +
-                    "of a quota problem.");
+                    " of a quota problem.");
             numberOfQuotaFail++;
-            failedQuota += student.getStudentID();
+            failedQuota += " " + student.getStudentID();
         }
 
     }

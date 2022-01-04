@@ -1,3 +1,6 @@
+/**
+ * This class is for creating unique IDs for students from departmnet code, registiration year and registiration order.
+ */
 public class StudentID {
 
     private Student student;

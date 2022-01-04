@@ -3,9 +3,7 @@ import java.util.ArrayList;
 /**
  * Student class includes some fields and methods related to the
  * student in our domain.
- *
- * @author canba
- *
+ * This class is a data container for students and communicates with advisor.
  */
 public class Student {
 
@@ -39,14 +37,17 @@ public class Student {
      * @return This returns an arraylist of previous courses of the student.
      *
      */
-    private ArrayList<Course> getPreviousCourses() { //
+    private ArrayList<Course> getPreviousCourses() {
         ArrayList<Course> previousCourses = new ArrayList<>();
         for (PreviousCourseGrade g : grades) {
             previousCourses.add(g.getCourse());
         }
         return previousCourses;
     }
-
+    /**
+     * This method checks whether student passed to course or not
+     * @param course Specific course for check
+     */
     public boolean isPassed(Course course) { // This method checks whether student passed to course or not
         ArrayList<Course> passedCourses = getPreviousCourses();
 

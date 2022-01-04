@@ -1,3 +1,6 @@
+/**
+ * This class converts decimal grades to letter grades
+ */
 public class PreviousCourseGrade {
 
     private Course course;
