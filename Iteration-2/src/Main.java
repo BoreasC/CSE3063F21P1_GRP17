@@ -5,7 +5,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException {
 
-        RegistrationController rc = new RegistrationController();
+        RegistrationController rc = RegistrationController.getInstance();
+        rc.startRegistration();
 
     }
 

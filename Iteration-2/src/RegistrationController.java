@@ -21,12 +21,19 @@ public class RegistrationController {
     private int numberOfAdvisors;
     private ArrayList<Advisor> advisors = new ArrayList<>(); // List to holds advisor objects
     private ArrayList<Student> students = new ArrayList<>(); // List to holds student objects
+    private static RegistrationController rc_instance = null;
 
-    public  RegistrationController( ) throws IOException, ParseException {
-        startRegistration();
+    private  RegistrationController(){
     }
 
-    private void startRegistration() {
+    public static RegistrationController getInstance() throws IOException, ParseException{
+        if (rc_instance == null)
+            rc_instance = new RegistrationController();
+
+        return rc_instance;
+    }
+
+    protected void startRegistration() {
 
         try {
             JSONParser parser = new JSONParser(); //Creates json parser object to parse input.json file
