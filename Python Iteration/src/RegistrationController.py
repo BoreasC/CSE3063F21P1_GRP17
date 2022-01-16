@@ -116,7 +116,7 @@ class RegistrationController(object):
                 #print("Student's GPA: " + str(student.transcript.calculate_gpa()))
                 print(student.log)
                 print("-----------------------------------------------------------------")
-        # json filea basılacaklar
+        
 
     def show_statistics(self):
         buffer = ""
