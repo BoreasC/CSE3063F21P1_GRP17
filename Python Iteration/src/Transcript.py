@@ -27,5 +27,4 @@ class Transcript(object):
                 credit_multiply_grade += prev_course_grade.course.credits * 1.0
             elif prev_course_grade.convert_letter_grade == "FF":
                 credit_multiply_grade += prev_course_grade.course.credits * 0
-
         return credit_multiply_grade / self.calculate_credits()

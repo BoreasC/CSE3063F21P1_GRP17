@@ -7,6 +7,7 @@ from Student import Student
 
 
 class RegistrationController(object):
+    __shared_instance = None
     def __init__(self):
         self.__advisors = []
         self.__students = []
@@ -19,6 +20,13 @@ class RegistrationController(object):
         self.__current_year = 0
         self.__names = []
         self.start_registration()
+
+    #Singleton pattern
+    @staticmethod
+    def get_instance():
+        if RegistrationController.__shared_instance == None:
+            __shared_instance = RegistrationController()
+        return __shared_instance
 
     def start_registration(self):
         with open("src\input.json", encoding="utf8") as json_file:
@@ -105,7 +113,7 @@ class RegistrationController(object):
                 print("Student ID: " + str(student.student_id))
                 print("" + student.name + "\n")
                 print("Student's year: " + str(student.year))
-                print("Student's GPA: " + str(student.transcript.calculate_gpa()))
+                #print("Student's GPA: " + str(student.transcript.calculate_gpa()))
                 print(student.log)
                 print("-----------------------------------------------------------------")
         # json filea basılacaklar
