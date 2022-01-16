@@ -21,7 +21,7 @@ class RegistrationController(object):
         self.start_registration()
 
     def start_registration(self):
-        with open("input.json", encoding="utf8") as json_file:
+        with open("src\input.json", encoding="utf8") as json_file:
             data = json.load(json_file)
             self.__advisor_number = int(data['Advisors'])
             self.__student_number = int(data['Students'])
@@ -52,7 +52,7 @@ class RegistrationController(object):
 
     def get_names_list(self):
         nameslist = []
-        with open('names.json', 'r', encoding="utf8") as json_file:
+        with open('src//names.json', 'r', encoding="utf8") as json_file:
             data = json.load(json_file)
             temp = data["names"]
         for i in temp:
