@@ -1,5 +1,6 @@
 import json
 import random
+import os
 from Course import Course
 from CourseSection import CourseSection
 from Advisor import Advisor
@@ -75,8 +76,9 @@ class RegistrationController(object):
         self.create_student()
 
     def create_student(self):
+        stu_range = self.__student_number // 4 + 1
         for year in range(1, 5):
-            for rank in range(1, 71):
+            for rank in range(1, stu_range):
                 student_name = self.get_names_list()[(random.randint(0, (len(self.get_names_list()) - 1)))]
                 self.__students.append((Student(student_name, year, rank, self)))
         self.assign_advisors_to_students()
@@ -116,6 +118,12 @@ class RegistrationController(object):
                 #print("Student's GPA: " + str(student.transcript.calculate_gpa()))
                 print(student.log)
                 print("-----------------------------------------------------------------")
+        if not os.path.exists("Outputs"):
+            os.mkdir("Outputs")
+            for student in self.__students:
+                file = str(student.student_id) + ".json"
+                with open(os.path.join("Outputs", file), "w") as output:
+                    json.dump(student.log, output, indent=4)
 
 
     def show_statistics(self):
