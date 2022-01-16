@@ -24,7 +24,7 @@ class RegistrationController(object):
     #Singleton pattern
     @staticmethod
     def get_instance():
-        if RegistrationController.__shared_instance == None:
+        if RegistrationController.__shared_instance is None:
             __shared_instance = RegistrationController()
         return __shared_instance
 
@@ -116,7 +116,7 @@ class RegistrationController(object):
                 #print("Student's GPA: " + str(student.transcript.calculate_gpa()))
                 print(student.log)
                 print("-----------------------------------------------------------------")
-        
+
 
     def show_statistics(self):
         buffer = ""
